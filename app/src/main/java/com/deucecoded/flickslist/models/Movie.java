@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Movie {
-    public static final String POSTER_PATH_KEY = "poster_path";
-    public static final String ORIGINAL_TITLE_KEY = "original_title";
-    public static final String OVERVIEW_KEY = "overview";
-    String posterPath;
-    String originalTitle;
-    String overview;
-    final String POSTER_PATH_PREFIX = "https://image.tmdb.org/t/p/w342";
+    private static final String POSTER_PATH_KEY = "poster_path";
+    private static final String ORIGINAL_TITLE_KEY = "original_title";
+    private static final String OVERVIEW_KEY = "overview";
+    private String posterPath = "";
+    private String originalTitle = "";
+    private String overview = "";
+    private final String POSTER_PATH_PREFIX = "https://image.tmdb.org/t/p/w342";
 
-    public Movie(JSONObject jsonObject) throws JSONException {
+    private Movie(JSONObject jsonObject) throws JSONException {
         posterPath = jsonObject.getString(POSTER_PATH_KEY);
         originalTitle = jsonObject.getString(ORIGINAL_TITLE_KEY);
         this.overview = jsonObject.getString(OVERVIEW_KEY);

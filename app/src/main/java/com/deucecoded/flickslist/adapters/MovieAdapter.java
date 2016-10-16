@@ -19,6 +19,12 @@ import java.util.List;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
+    private static class ViewHolder {
+        TextView titleView;
+        TextView descriptionView;
+        ImageView imageView;
+    }
+
     public MovieAdapter(Context context, List<Movie> movies) {
         super(context, android.R.layout.simple_list_item_1, movies);
     }
@@ -27,20 +33,24 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie movie = getItem(position);
+        ViewHolder viewHolder;
         if(convertView == null) {
+            viewHolder = new ViewHolder();
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_movie, parent, false);
+
+            viewHolder.titleView = (TextView)convertView.findViewById(R.id.titleTextView);
+            viewHolder.descriptionView = (TextView)convertView.findViewById(R.id.overviewTextView);
+            viewHolder.imageView = (ImageView)convertView.findViewById(R.id.movieImageView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView imageView = (ImageView)convertView.findViewById(R.id.movieImageView);
-        imageView.setImageResource(0);
-
-        TextView titleView = (TextView)convertView.findViewById(R.id.titleTextView);
-        TextView descriptionView = (TextView)convertView.findViewById(R.id.overviewTextView);
-
-        titleView.setText(movie.getOriginalTitle());
-        descriptionView.setText(movie.getOverview());
-        Picasso.with(getContext()).load(movie.getPosterPath()).into(imageView);
+        viewHolder.imageView.setImageResource(0);
+        viewHolder.titleView.setText(movie.getOriginalTitle());
+        viewHolder.descriptionView.setText(movie.getOverview());
+        Picasso.with(getContext()).load(movie.getPosterPath()).into(viewHolder.imageView);
 
         return convertView;
     }
