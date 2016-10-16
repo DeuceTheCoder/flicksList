@@ -54,7 +54,11 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         if (movie != null) {
             viewHolder.titleView.setText(movie.getOriginalTitle());
             viewHolder.descriptionView.setText(movie.getOverview());
-            Picasso.with(getContext()).load(movie.getImagePath(isLandscape)).into(viewHolder.imageView);
+            Picasso.with(getContext())
+                    .load(movie.getImagePath(isLandscape))
+                    .placeholder(R.drawable.image_icon)
+                    .error(R.drawable.image_broken)
+                    .into(viewHolder.imageView);
         }
 
         return convertView;
