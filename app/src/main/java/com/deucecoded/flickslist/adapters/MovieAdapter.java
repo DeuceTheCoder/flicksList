@@ -1,6 +1,7 @@
 package com.deucecoded.flickslist.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.deucecoded.flickslist.R;
 import com.deucecoded.flickslist.models.Movie;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.util.List;
 
@@ -31,26 +31,31 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         Movie movie = getItem(position);
         ViewHolder viewHolder;
-        if(convertView == null) {
+        if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.item_movie, parent, false);
 
-            viewHolder.titleView = (TextView)convertView.findViewById(R.id.titleTextView);
-            viewHolder.descriptionView = (TextView)convertView.findViewById(R.id.overviewTextView);
-            viewHolder.imageView = (ImageView)convertView.findViewById(R.id.movieImageView);
+            viewHolder.titleView = (TextView) convertView.findViewById(R.id.titleTextView);
+            viewHolder.descriptionView = (TextView) convertView.findViewById(R.id.overviewTextView);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.movieImageView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        boolean isLandscape;
+        int orientation = getContext().getResources().getConfiguration().orientation;
+        isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE;
 
         viewHolder.imageView.setImageResource(0);
-        viewHolder.titleView.setText(movie.getOriginalTitle());
-        viewHolder.descriptionView.setText(movie.getOverview());
-        Picasso.with(getContext()).load(movie.getPosterPath()).into(viewHolder.imageView);
+        if (movie != null) {
+            viewHolder.titleView.setText(movie.getOriginalTitle());
+            viewHolder.descriptionView.setText(movie.getOverview());
+            Picasso.with(getContext()).load(movie.getImagePath(isLandscape)).into(viewHolder.imageView);
+        }
 
         return convertView;
     }
